@@ -5,7 +5,7 @@ def init_sidebar():
         """
         <style>
             section[data-testid="stSidebar"] {
-                width: 380px !important; # Set the width to your desired value
+                width: 300px !important; # Set the width to your desired value
             }
         </style>
         """,
@@ -14,4 +14,5 @@ def init_sidebar():
     st.logo("logo.png")
     with st.sidebar:
         st.page_link("main.py", label="Home")
-        st.page_link("pages/create_journey.py", label="Create Journey")
+        st.page_link("pages/create_journey_1.py", label="Create Journey")
+        st.page_link("pages/assign_journey_1.py", label="Assign Journey")
