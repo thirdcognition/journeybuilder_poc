@@ -1,29 +1,15 @@
 import streamlit as st
-import random
 from create_card import gen_content, split_list_into_chunks, create_sample_data
+from sidebar import init_sidebar
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded")
 
-# Sidebar - Width & Content
-st.markdown(
-    """
-    <style>
-        section[data-testid="stSidebar"] {
-            width: 320px !important; # Set the width to your desired value
-        }
-    </style>
-    """,
-    unsafe_allow_html=True,)
+# Initialize Sidebar
+init_sidebar()
 
-st.logo("logo.png")
-with st.sidebar:
-    st.page_link("main.py", label="Home")
-    st.page_link("pages/Create_Journey.py", label="Create Journey")
-
-# PageTitle
+#---- Main Content Area ----
 st.header("My Journeys")
-st.markdown(" ")
 
 # Number of cards on page
 num_cards = 5
@@ -42,5 +28,3 @@ for item_row in item_chunks[:2]:  # We only want two rows
     for i in range(min(row_len, len(item_row))):
         with cols[i]:
             gen_content(item_row[i])
-
-
