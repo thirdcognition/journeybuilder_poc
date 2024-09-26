@@ -1,12 +1,14 @@
 import streamlit as st
 from create_card import gen_content, split_list_into_chunks, create_sample_data
 from sidebar import init_sidebar
+from global_css import init_css
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded")
 
-# Initialize Sidebar
+# Initialize Sidebar & Custom CSS
 init_sidebar()
+init_css()
 
 #---- Main Content Area ----
 st.header("My Journeys")
