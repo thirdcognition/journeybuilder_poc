@@ -1,0 +1,16 @@
+{
+    "Engineering & Development": 
+        ["Software Engineer", "DevOps Engineer", "Data Scientist", "UX/UI Designer", "QA Engineer"],
+    "Product & Project Management": 
+        ["Product Manager", "Technical Program Manager", "Scrum Master"], 
+    "IT & Infrastructure": 
+        ["IT Support Specialist", "Cloud Engineer"], 
+    "Sales & Marketing": 
+        ["Sales Engineer", "Digital Marketing Specialist", "Customer Success Manager"], 
+    "Finance & Operations": 
+        ["Financial Analyst", "HR Manager", "Operations Manager"], 
+    "Leadership": 
+        ["CTO (Chief Technology Officer)", "VP of Engineering", "Chief Product Officer"], 
+    "Security & Compliance": 
+        ["Cybersecurity Analyst"]
+}
