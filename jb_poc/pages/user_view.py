@@ -35,18 +35,24 @@ second_level_data = data[selected_role][0]
 
 def handle_journey_subject(index:int, title:str, subject:dict):
     with st.expander(f"{str(index+1)}\. {title}"):
-        #st.write(subject)
+        subindex = 1
         for sub_title, subsubject in subject.items():
-            st.subheader(sub_title)
+            if subindex != 1:
+                st.divider()
+
+            st.subheader(f"{str(index+1)}\.{subindex} {sub_title}")
+            subindex += 1
+
             for item in subsubject:
-                st.write(item)
-        #order += 1
+                col1, col2 = st.columns([0.01, 0.99])
+                with col2:
+                    st.write(f"- {item}")
+
+
+
+
 
 # Create expander for every Section
-order = 1
+index = 1
 for index, key in enumerate(second_level_data.keys()):
-    col1, col2 = st.columns([0.9, 0.1])
-    with col1:
-        handle_journey_subject(index, key, second_level_data[key][0])
-    with col2:
-        st.page_link("main.py", label="Edit")
+    handle_journey_subject(index, key, second_level_data[key][0])
