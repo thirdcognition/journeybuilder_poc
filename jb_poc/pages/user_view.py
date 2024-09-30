@@ -33,9 +33,20 @@ st.markdown(" ")
 # Extract the second level of information
 second_level_data = data[selected_role][0]
 
+def handle_journey_subject(index:int, title:str, subject:dict):
+    with st.expander(f"{str(index+1)}\. {title}"):
+        #st.write(subject)
+        for sub_title, subsubject in subject.items():
+            st.subheader(sub_title)
+            for item in subsubject:
+                st.write(item)
+        #order += 1
+
 # Create expander for every Section
 order = 1
-for key in second_level_data.keys():
-    with st.expander(f"{order} - {key}"):
-        st.write(second_level_data[key])
-        order += 1
+for index, key in enumerate(second_level_data.keys()):
+    col1, col2 = st.columns([0.9, 0.1])
+    with col1:
+        handle_journey_subject(index, key, second_level_data[key][0])
+    with col2:
+        st.page_link("main.py", label="Edit")
