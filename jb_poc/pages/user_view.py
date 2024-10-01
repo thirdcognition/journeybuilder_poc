@@ -1,12 +1,12 @@
 import streamlit as st
 from sidebar import init_sidebar
 from global_css import init_css
-import json
+import json, os, openai
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded")
 
-# Initialize Sidebar & Custom CSS
+# Initialize Sidebar & Custom CSS & OpenAI
 init_sidebar()
 init_css()
 
@@ -14,66 +14,75 @@ init_css()
 st.header("User View")
 st.markdown(" ")
 
-#---- AI Role Matcher - Start ----
-import os
-import openai
+# AI Role Matcher - Input area
+with st.expander("AI Role Matcher - beta", expanded=False, icon="⚡"):
+    container = st.container(border=False)
+    with container:
+        text_input = st.text_area("Role Description", placeholder="Describe role in detail", key=2, height=300)
 
-# Setting the API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+#Provide OpenAI API Key
+openai.api_key = os.getenv("OPENAI_API_KEY")#
+
+#Function for LLM response
 def get_completion(prompt, model="gpt-4o-2024-08-06"):
   messages = [{"role": "user", "content": prompt}]
   response = openai.ChatCompletion.create(
     model=model,
     messages=messages,
-    temperature=1,  # this is the degree of randomness of the model's output
+    temperature=0.1,  # this is the degree of randomness of the model's output
   )
   return response.choices[0].message["content"]
 
-with st.expander("AI Role Matcher", expanded=False, icon="⚡"):
-    container = st.container(border=False)
-    with container:
-        # prompt = f"Hello Pirate!"
-        # response = f'"{get_completion(prompt)}'""
-        #st.markdown(response)
-        role_description = st.text_area("Role Description", placeholder="Describe role in detail", key=2, height=300)
 
-
-#Match Description with position
-
-# Load JSON data
+# Load JSON data for OpenAI Prompts & Matching
 with open('Department_Roles.json', 'r') as f:
     roles = json.load(f)
-
-with open('Journey_Templates.json', 'r') as f:
-    data = json.load(f)
-
-prompt = f"First, I will give you a list of roles: {roles}, and then I will give you a job descriptions: {role_description}. Then, I want you to give me the role (only from those in {roles}) that matches the job description (in {role_description}) the most. I want the output to only mention the role (one of the roles in {roles}) that closely matches the job description (in {role_description}). I don't want any other explanations in your output:"
-
-if len(role_description) > 30:
-    response = f"Matches with: {get_completion(prompt)}"
-else:
-    response = "Please provide description"
-
-with container:
-    st.markdown(response)
+# Prompt
+prompt = f"First, I will give you a list of roles: {roles}, and then I will give you a job description: {text_input}. Then, I want you to give me the role (only from those in {roles}) that matches the job description (in {text_input}) the most. I want the output to only mention the role (one of the roles in {roles}) that closely matches the job description (in {text_input}). I don't want any other explanations in your output:"
 
 
-#---- AI Role Matcher - End ----
+#Send prompt when at least 30 characters
+if len(text_input) > 30:
+    text_input = f"{get_completion(prompt)}"
 
 #--- Select Box ---
 
-# Get all roles for Select Box
-all_roles = data.keys()
+#Initialize session state for selected option if it doesn't exist
+if 'selected_option' not in st.session_state:
+    st.session_state.selected_option = None
+
+#Load JSON for Template Data
+with open('Journey_Templates.json', 'r') as f:
+    data = json.load(f)
+
+#Load JSON for Select Box
+with open('Journey_Templates.json', 'r') as f:
+    data_dict = json.load(f)
+
+# Convert the dictionary keys to a list
+roles_list = list(data_dict.keys())
+
+options = roles_list
 
 
+# Function to update the selected option based on text input
+def update_selected_option(text_input):
+    matching_options = [option for option in options if text_input.lower() in option.lower()]
+    if matching_options:
+        st.session_state.selected_option = matching_options[0]
+    else:
+        st.session_state.selected_option = None
 
-#Select Role
-selected_role = st.selectbox(
-    "Select Role",
-    (all_roles),
-    index=0,
+# Update selected option based on text input
+update_selected_option(text_input)
+
+
+# Display the selectbox with the dynamically matched option
+selected_option = st.selectbox(
+    'Choose an option:',
+    options,
+    index=options.index(st.session_state.selected_option) if st.session_state.selected_option else 0
 )
-
 
 
 
@@ -83,7 +92,7 @@ st.markdown(" ")
 
 
 # Extract the second level of information
-second_level_data = data[selected_role][0]
+second_level_data = data[selected_option][0]
 
 def handle_journey_subject(index:int, title:str, subject:dict):
     with st.expander(f"{str(index+1)}\. {title}"):
