@@ -2,6 +2,7 @@ import streamlit as st
 from sidebar import init_sidebar
 from global_css import init_css
 import json, os, openai
+import random
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded")
@@ -20,7 +21,7 @@ with st.expander("AI Role Matcher - beta", expanded=False, icon="⚡"):
     with container:
         text_input = st.text_area("Role Description", placeholder="Describe role in detail", key=2, height=300)
 
-#Provide OpenAI API Key
+# OpenAI API Key
 openai.api_key = os.getenv("OPENAI_API_KEY")#
 
 #Function for LLM response
@@ -33,15 +34,13 @@ def get_completion(prompt, model="gpt-4o-2024-08-06"):
   )
   return response.choices[0].message["content"]
 
-
-# Load JSON data for OpenAI Prompts & Matching
+# Load JSON data for OpenAI Prompts
 with open('Department_Roles.json', 'r') as f:
     roles = json.load(f)
 # Prompt
 prompt = f"First, I will give you a list of roles: {roles}, and then I will give you a job description: {text_input}. Then, I want you to give me the role (only from those in {roles}) that matches the job description (in {text_input}) the most. I want the output to only mention the role (one of the roles in {roles}) that closely matches the job description (in {text_input}). I don't want any other explanations in your output:"
 
-
-#Send prompt when at least 30 characters
+#Send prompt to LLM when at least 30 characters
 if len(text_input) > 30:
     text_input = f"{get_completion(prompt)}"
 
@@ -61,9 +60,7 @@ with open('Journey_Templates.json', 'r') as f:
 
 # Convert the dictionary keys to a list
 roles_list = list(data_dict.keys())
-
 options = roles_list
-
 
 # Function to update the selected option based on text input
 def update_selected_option(text_input):
@@ -76,42 +73,50 @@ def update_selected_option(text_input):
 # Update selected option based on text input
 update_selected_option(text_input)
 
-
 # Display the selectbox with the dynamically matched option
 selected_option = st.selectbox(
-    'Choose an option:',
+    'Choose Journey Template:',
     options,
     index=options.index(st.session_state.selected_option) if st.session_state.selected_option else 0
 )
 
-
-
 st.markdown(" ")
-
-
-
 
 # Extract the second level of information
 second_level_data = data[selected_option][0]
 
+@st.dialog(f"Module")
+def open_module(item):
+    st.write(f"Let's get started with module {item}")
+    feedback = st.text_input("Provide feedback...")
+    if st.button("Submit"):
+        st.session_state.vote = {"item": item, "reason": reason}
+        st.rerun()
+
 def handle_journey_subject(index:int, title:str, subject:dict):
-    with st.expander(f"{str(index+1)}\. {title}"):
-        subindex = 1
-        for sub_title, subsubject in subject.items():
-            if subindex != 1:
-                st.divider()
 
-            st.subheader(f"{str(index+1)}\.{subindex} {sub_title}")
-            subindex += 1
+    col1, col2 = st.columns([0.01, 0.99])
+    with col2:
 
-            for item in subsubject:
-                col1, col2 = st.columns([0.01, 0.99])
-                with col2:
-                    st.write(f"- {item}")
+        with st.expander(f"{str(index+1)}\. {title}"):
+            subindex = 1
+            for sub_title, subsubject in subject.items():
+                if subindex != 1:
+                    st.divider()
 
+                st.subheader(f"{str(index+1)}\.{subindex} {sub_title}")
+                subindex += 1
 
+                for item in subsubject:
+                    col1, col2, col3 = st.columns([0.01, 0.79, 0.2])
+                    with col2:
+                        st.write(f"- {item}")
 
+                    with col3:
 
+                        #Open Dialog
+                        if st.button("Open", key=random.randint(0,1000000)):
+                            open_module("1")
 
 # Create expander for every Section
 index = 1
