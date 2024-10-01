@@ -14,12 +14,58 @@ init_css()
 st.header("User View")
 st.markdown(" ")
 
+#---- AI Role Matcher - Start ----
+import os
+import openai
+
+# Setting the API key
+openai.api_key = os.getenv("OPENAI_API_KEY")
+def get_completion(prompt, model="gpt-4o-2024-08-06"):
+  messages = [{"role": "user", "content": prompt}]
+  response = openai.ChatCompletion.create(
+    model=model,
+    messages=messages,
+    temperature=1,  # this is the degree of randomness of the model's output
+  )
+  return response.choices[0].message["content"]
+
+with st.expander("AI Role Matcher", expanded=False, icon="⚡"):
+    container = st.container(border=False)
+    with container:
+        # prompt = f"Hello Pirate!"
+        # response = f'"{get_completion(prompt)}'""
+        #st.markdown(response)
+        role_description = st.text_area("Role Description", placeholder="Describe role in detail", key=2, height=300)
+
+
+#Match Description with position
+
 # Load JSON data
+with open('Department_Roles.json', 'r') as f:
+    roles = json.load(f)
+
 with open('Journey_Templates.json', 'r') as f:
     data = json.load(f)
 
-# Get all roles
+prompt = f"First, I will give you a list of roles: {roles}, and then I will give you a job descriptions: {role_description}. Then, I want you to give me the role (only from those in {roles}) that matches the job description (in {role_description}) the most. I want the output to only mention the role (one of the roles in {roles}) that closely matches the job description (in {role_description}). I don't want any other explanations in your output:"
+
+if len(role_description) > 30:
+    response = f"Matches with: {get_completion(prompt)}"
+else:
+    response = "Please provide description"
+
+with container:
+    st.markdown(response)
+
+
+#---- AI Role Matcher - End ----
+
+#--- Select Box ---
+
+# Get all roles for Select Box
 all_roles = data.keys()
+
+
 
 #Select Role
 selected_role = st.selectbox(
@@ -28,7 +74,13 @@ selected_role = st.selectbox(
     index=0,
 )
 
+
+
+
 st.markdown(" ")
+
+
+
 
 # Extract the second level of information
 second_level_data = data[selected_role][0]
