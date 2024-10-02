@@ -2,7 +2,6 @@ import streamlit as st
 from sidebar import init_sidebar
 from global_css import init_css
 import json, os, openai
-import random
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded")
@@ -98,16 +97,17 @@ def handle_journey_subject(index:int, title:str, subject:dict):
     col1, col2 = st.columns([0.01, 0.99])
     with col2:
 
-        with st.expander(f"{str(index+1)}\. {title}"):
+        with st.expander(f"{str(index+1)}. {title}"):
             subindex = 1
             for sub_title, subsubject in subject.items():
                 if subindex != 1:
                     st.divider()
 
-                st.subheader(f"{str(index+1)}\.{subindex} {sub_title}")
+                st.subheader(f"{str(index+1)}.{subindex} {sub_title}")
                 subindex += 1
 
-                for item in subsubject:
+
+                for i, item in enumerate(subsubject):
                     col1, col2, col3 = st.columns([0.01, 0.79, 0.2])
                     with col2:
                         st.write(f"- {item}")
@@ -115,8 +115,9 @@ def handle_journey_subject(index:int, title:str, subject:dict):
                     with col3:
 
                         #Open Dialog
-                        if st.button("Open", key=random.randint(0,1000000)):
-                            open_module("1")
+                        if st.button("Open", key=f"open_button_{index}_{subindex}_{i}"):
+                            open_module(f"{index}_{subindex}_{i}")
+
 
 # Create expander for every Section
 index = 1
