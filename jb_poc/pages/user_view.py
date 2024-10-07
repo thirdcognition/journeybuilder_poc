@@ -84,12 +84,12 @@ st.markdown(" ")
 # Extract the second level of information
 second_level_data = data[selected_option][0]
 
-@st.dialog(f"Module")
+@st.dialog(f"Module", width="large")
 def open_module(item):
     st.write(f"Let's get started with module {item}")
     feedback = st.text_input("Provide feedback...")
     if st.button("Submit"):
-        st.session_state.vote = {"item": item, "reason": reason}
+        st.session_state.vote = {"item": item, "reason": feedback}
         st.rerun()
 
 def handle_journey_subject(index:int, title:str, subject:dict):
@@ -113,7 +113,6 @@ def handle_journey_subject(index:int, title:str, subject:dict):
                         st.write(f"- {item}")
 
                     with col3:
-
                         #Open Dialog
                         if st.button("Open", key=f"open_button_{index}_{subindex}_{i}"):
                             open_module(f"{index}_{subindex}_{i}")
