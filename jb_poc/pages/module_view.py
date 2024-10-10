@@ -1,7 +1,7 @@
 import streamlit as st
 from sidebar import init_sidebar
 from global_css import init_css
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageEnhance
 
 #Page Config
 st.set_page_config(page_title="Journey Builder", initial_sidebar_state="expanded", layout="wide")
@@ -21,13 +21,12 @@ with col2:
 
         with cont_col1:
 
-            #Fix image
+            #Invert image & Fix Contrast
             image = Image.open("sample_image.png")
             inverted_image = ImageOps.invert(image)
-            # Create an ImageEnhance.Brightness object
-            st.image(inverted_image, width=128)
-
-
+            adjust_contrast = ImageEnhance.Contrast(inverted_image)
+            adjusted_image = adjust_contrast.enhance(0.71)
+            st.image(adjusted_image, width=128)
 
         with cont_col2:
             st.header("1. Introduction to the Company & Team")

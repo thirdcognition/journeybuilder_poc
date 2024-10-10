@@ -1,8 +1,17 @@
 import streamlit as st
 
+#Hide image fullscreenm
+
 def init_css():
 
     st.markdown("""
+            
+            <style>
+                    button[title="View fullscreen"]{
+                    visibility: hidden;}
+            </style>
+            
+            
             <style>
                    .block-container {
                         padding-top: 1rem;

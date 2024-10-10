@@ -14,7 +14,7 @@ init_css()
 st.header("My Journeys")
 
 # Number of cards on page
-num_cards = 5
+num_cards = 3
 items = create_sample_data(num_cards)
 
 # Define the number of columns per row
