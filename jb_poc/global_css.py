@@ -1,6 +1,6 @@
 import streamlit as st
 
-#Hide image fullscreenm
+#Hide image fullscreen, control page wirth
 
 def init_css():
 
@@ -14,6 +14,7 @@ def init_css():
             
             <style>
                    .block-container {
+                        max-width: 1000px;  #control page width
                         padding-top: 1rem;
                         padding-bottom: 2rem;
                         padding-left: 1rem;

@@ -44,37 +44,3 @@ for item_row in item_chunks[:2]:  # We only want two rows
             gen_content(item_row[i])
 
 st.markdown("**Time to complete module(s):** 5 Days - You are on track!")
-
-# ##---- Cards ----
-# st.subheader("1. Introduction to the Company & Team")
-#
-# card1, card2, card3 = st.columns(3, gap="small")
-#
-# with card1:
-#     container = st.container(border=True)
-#     with container:
-#         number, text = st.columns([0.15, 0.85])
-#         with number:
-#             st.write("**1.1**")
-#
-#         with text:
-#             st.write("**Meet the Marketing Team**")
-#
-#         lmargin, image, rmargin = st.columns([0.15, 0.7, 0.15])
-#         with image:
-#
-#             # Invert image & Fix Contrast
-#             image = Image.open("sample_image.png")
-#             inverted_image = ImageOps.invert(image)
-#             adjust_contrast = ImageEnhance.Contrast(inverted_image)
-#             adjusted_image = adjust_contrast.enhance(0.71)
-#             st.image(adjusted_image, width=128)
-#
-#         lmargin, intro, rmargin = st.columns([0.1, 0.8, 0.1])
-#         with intro:
-#             st.caption("Introduction to the marketing team members and their roles.")
-#             st.markdown("")
-#
-#         lmargin, button, rmargin = st.columns([0.325, 0.40, 0.275])
-#         with button:
-#             st.button("Start")
