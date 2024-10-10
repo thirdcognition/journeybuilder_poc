@@ -17,3 +17,5 @@ def init_sidebar():
         st.page_link("pages/create_journey_1.py", label="Create Journey")
         st.page_link("pages/assign_journey_1.py", label="Assign Journey")
         st.page_link("pages/user_view.py", label="User View")
+        st.page_link("pages/module_view.py", label="Module View")
+        st.page_link("pages/cards_view.py", label="Cards View")
