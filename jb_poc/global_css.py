@@ -12,6 +12,7 @@ def init_css():
             </style>
             
             
+            
             <style>
                    .block-container {
                         max-width: 1000px;  #control page width

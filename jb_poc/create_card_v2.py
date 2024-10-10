@@ -7,7 +7,6 @@ from annotated_text import annotated_text, annotation
 def gen_content(item):
     container = st.container(border=True, height=480)
     with container:
-        #annotated_text(annotation(item["team"] + " Team", "", "#184370"))
 
         number, text = st.columns([0.12, 0.88])
         with number:
@@ -18,7 +17,7 @@ def gen_content(item):
 
         with text:
             st.markdown(f"""
-                                        <div style="font-size: 16px; margin-bottom: 20px; margin-top: 0px; height: 60px; line-height: 22px;">
+                                        <div style="font-size: 16px; margin-bottom: 20px; margin-top: 0px; height: 40px; line-height: 22px;">
                                         Meet the Marketing Team {item['position']} {item['level']}</div>
                                 """, unsafe_allow_html=True)
 
@@ -29,15 +28,14 @@ def gen_content(item):
             inverted_image = ImageOps.invert(image)
             adjust_contrast = ImageEnhance.Contrast(inverted_image)
             adjusted_image = adjust_contrast.enhance(0.71)
-            st.image(adjusted_image, width=128)
-
+            st.image(adjusted_image, width=180)
 
         st.markdown(f"""
-        <div style="border: 0px solid #ddd; padding: 3px; border-radius: 0px; text-align: left; height: 90px;">
+        <div style="border: 0px solid #ddd; padding: 10px; border-radius: 0px; text-align: left; height: 90px;">
             <p>{item["type"]} for {item['position']} {item['level']} in {item['location']}.</p>
         </div>
-         <div style="border: 0px solid #ddd; font-size: 14px; padding: 3px; margin-top: 5px; border-radius: 0px; text-align: left; height: 80px; margin-bottom: 5px;">
-            Modules: {item["modules"]}<br>Length:  {item['length']}
+         <div style="border: 0px solid #ddd; font-size: 14px; padding: 10px; margin-top: 5px; border-radius: 0px; text-align: left; height: 45px; margin-bottom: 5px;">
+            Modules: {item["modules"]}
         </div>
 
         """, unsafe_allow_html=True)
