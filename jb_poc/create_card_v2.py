@@ -23,13 +23,13 @@ def gen_content(item):
             number, text = st.columns([0.1, 0.9])
             with number:
                 st.markdown(f"""
-                                <div style="font-size: 20px; margin-bottom: 20px; margin-top: 0px; padding: 0px; line-height: 22px;">
+                                <div style="font-size: 18px; font-weight: 600; margin-bottom: 20px; margin-top: 0px; padding: 0px; line-height: 22px;">
                                 1.1</div>
                         """, unsafe_allow_html=True)
 
             with text:
                 st.markdown(f"""
-                                            <div style="font-size:20px; margin-bottom: 20px; margin-top: 0px; height: 40px; line-height: 22px; padding: 0px;">
+                                            <div style="font-size:18px; font-weight: 600; margin-bottom: 20px; margin-top: 0px; height: 40px; line-height: 22px; padding: 0px;">
                                             Meet the Marketing Team {item['position']} {item['level']}</div>
                                     """, unsafe_allow_html=True)
 
@@ -40,8 +40,8 @@ def gen_content(item):
                 st.image(image,use_column_width=True)
 
             st.markdown(f"""
-            <div style="border: 0px solid #fff; padding-left: 20px; border-radius: 0px; text-align: left; height: 90px;">
-                <p>{item["type"]} for {item['position']} {item['level']} in {item['location']}.</p>
+            <div style="border: 0px solid #fff; padding-left: 10px; padding-right: 10px; font-size: 14px; font-weight: 100; border-radius: 0px; text-align: left; height: 90px;">
+                {item["type"]} for {item['position']} {item['level']} in {item['location']}.
             </div>
     
             """, unsafe_allow_html=True)
