@@ -1,46 +1,73 @@
 import random
 import streamlit as st
 from PIL import Image, ImageOps, ImageEnhance
+from streamlit_extras.stylable_container import stylable_container
 from annotated_text import annotated_text, annotation
 
 # Function to generate content for each card + card layout
 def gen_content(item):
-    container = st.container(border=True, height=480)
-    with container:
+    with stylable_container(
+            key="container_with_border",
+            css_styles="""
+            {
+                border: 0px solid rgba(256, 256, 256, 0.2);
+                border-radius: 3rem;
+                padding: 2rem;
+                background-color: #2e2e2e;
+            }
+            """,
+):
+        container = st.container(border=False)
+        with container:
 
-        number, text = st.columns([0.12, 0.88])
-        with number:
+            number, text = st.columns([0.1, 0.9])
+            with number:
+                st.markdown(f"""
+                                <div style="font-size: 20px; margin-bottom: 20px; margin-top: 0px; padding: 0px; line-height: 22px;">
+                                1.1</div>
+                        """, unsafe_allow_html=True)
+
+            with text:
+                st.markdown(f"""
+                                            <div style="font-size:20px; margin-bottom: 20px; margin-top: 0px; height: 40px; line-height: 22px; padding: 0px;">
+                                            Meet the Marketing Team {item['position']} {item['level']}</div>
+                                    """, unsafe_allow_html=True)
+
+            lmargin, image, rmargin = st.columns([0.1, 0.8, 0.1])
+            with image:
+                #Invert image & Fix Contrast
+                image = Image.open("sample_image.png")
+                st.image(image,use_column_width=True)
+
             st.markdown(f"""
-                            <div style="font-size: 16px; margin-bottom: 20px; margin-top: 0px;">
-                            1.1</div>
-                    """, unsafe_allow_html=True)
+            <div style="border: 0px solid #fff; padding-left: 20px; border-radius: 0px; text-align: left; height: 90px;">
+                <p>{item["type"]} for {item['position']} {item['level']} in {item['location']}.</p>
+            </div>
+    
+            """, unsafe_allow_html=True)
 
-        with text:
-            st.markdown(f"""
-                                        <div style="font-size: 16px; margin-bottom: 20px; margin-top: 0px; height: 40px; line-height: 22px;">
-                                        Meet the Marketing Team {item['position']} {item['level']}</div>
-                                """, unsafe_allow_html=True)
+            with stylable_container(
+                    key="green_button",
+                    css_styles=["""
+                    button {
+                        background-color: green;
+                        border-color: green;
+                        color: white;
+                        border-radius: 20px;
+                    }""",
+                    """
+                    button:hover {
+                        background-color: red;
+                        border-color: red;
+                        color: white;
+                        border-radius: 20px;
+                    }
+                    """],
+            ):
+                lmargin, button, rmargin = st.columns([0.1, 0.8, 0.1])
+                with button:
+                    st.button("Start", key=random.randint(1, 10000), type="primary", use_container_width=True)
 
-        lmargin, image, rmargin = st.columns([0.15, 0.7, 0.15])
-        with image:
-            #Invert image & Fix Contrast
-            image = Image.open("sample_image.png")
-            inverted_image = ImageOps.invert(image)
-            adjust_contrast = ImageEnhance.Contrast(inverted_image)
-            adjusted_image = adjust_contrast.enhance(0.71)
-            st.image(adjusted_image, width=180)
-
-        st.markdown(f"""
-        <div style="border: 0px solid #ddd; padding: 10px; border-radius: 0px; text-align: left; height: 90px;">
-            <p>{item["type"]} for {item['position']} {item['level']} in {item['location']}.</p>
-        </div>
-         <div style="border: 0px solid #ddd; font-size: 14px; padding: 10px; margin-top: 5px; border-radius: 0px; text-align: left; height: 45px; margin-bottom: 5px;">
-            Modules: {item["modules"]}
-        </div>
-
-        """, unsafe_allow_html=True)
-
-        st.button("Start", key=random.randint(1, 10000), type="primary", use_container_width=True)
 
 # Function to split the list into chunks
 def split_list_into_chunks(lst, chunk_size):

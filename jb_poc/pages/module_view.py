@@ -11,7 +11,6 @@ init_sidebar()
 init_css()
 
 #---- Main Content Area ----
-st.markdown("")
 
 container = st.container(border=True)
 with container:
@@ -21,10 +20,7 @@ with container:
 
         #Invert image & Fix Contrast
         image = Image.open("sample_image.png")
-        inverted_image = ImageOps.invert(image)
-        adjust_contrast = ImageEnhance.Contrast(inverted_image)
-        adjusted_image = adjust_contrast.enhance(0.71)
-        st.image(adjusted_image, width=128)
+        st.image(image)
 
     with cont_col2:
         st.header("1. Introduction to the Company & Team")

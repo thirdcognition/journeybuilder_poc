@@ -12,10 +12,6 @@ init_sidebar()
 init_css()
 
 # ---- Main Content Area ----
-
-st.markdown("")
-
-
 st.header("Hello [First Name]")
 st.subheader("Here’s what we are learning today!")
 
@@ -43,4 +39,5 @@ for item_row in item_chunks[:2]:  # We only want two rows
         with cols[i]:
             gen_content(item_row[i])
 
+st.markdown("")
 st.markdown("**Time to complete module(s):** 5 Days - You are on track!")
