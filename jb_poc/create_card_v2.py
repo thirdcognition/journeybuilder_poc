@@ -10,7 +10,7 @@ def gen_content(item):
             key="container_with_border",
             css_styles="""
             {
-                border: 0px solid rgba(256, 256, 256, 0.2);
+                border: 2px solid rgba(256, 256, 256, 0.2);
                 border-radius: 3rem;
                 padding: 2rem;
                 background-color: #2e2e2e;
